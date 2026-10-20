@@ -45,9 +45,17 @@ jobs:
           sudo tar -xzf /tmp/hugo.tar.gz -C /usr/local/bin hugo
           hugo version
 
+      # 必须用 Dart Sass 官方原生二进制：npm 的 sass 只是 Node 脚本，
+      # Hugo 用 exec 直接拉起时会「unexpected EOF」崩溃。
       - name: 安装 Dart Sass
+        env:
+          DART_SASS_VERSION: 1.105.1
         run: |
-          npm install --global sass
+          curl -fsSL --retry 3 -o /tmp/dart-sass.tar.gz \
+            "https://github.com/sass/dart-sass/releases/download/${DART_SASS_VERSION}/dart-sass-${DART_SASS_VERSION}-linux-x64.tar.gz"
+          sudo tar -xzf /tmp/dart-sass.tar.gz -C /usr/local/lib
+          sudo ln -sf /usr/local/lib/dart-sass/sass /usr/local/bin/sass
+          which sass
           sass --version
 
       - name: 构建
