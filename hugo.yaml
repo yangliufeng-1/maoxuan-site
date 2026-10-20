@@ -1,0 +1,66 @@
+# 《毛泽东选集》数字阅读站 — 站点配置
+title: 毛泽东选集 · 数字阅读
+baseURL: https://maoxuan-reader-76863.app.workbuddy.host/
+defaultContentLanguage: zh
+enableGitInfo: false
+enableRobotsTXT: true
+enableEmoji: true
+timeZone: Asia/Shanghai
+
+languages:
+  zh:
+    label: 简体中文
+    locale: zh-CN
+    weight: 1
+    title: 毛泽东选集 · 数字阅读
+    hasCJKLanguage: true
+    params:
+      description: 《毛泽东选集》五卷篇目索引、写作背景与阅读指南。
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+    parser:
+      attribute:
+        block: true
+      wrapStandAloneImageWithinParagraph: false
+  highlight:
+    noClasses: false
+
+outputs:
+  home: [HTML, RSS, markdown, LLMS]
+  page: [HTML, markdown]
+  section: [HTML, RSS, print, markdown]
+
+params:
+  offline_search: true
+  copyright:
+    authors: 本站为文献索引与阅读导航站点，非官方出版物
+    from_year: 2026
+  footer_center_info: '正文著作权归权利人所有，本站仅收录篇目信息与导读文字。'
+  ui:
+    dark_mode: true
+    section_index: cards
+    blog_index: cards
+    sidebar_menu_foldable: true
+    sidebar_icon_policy: groups
+    backlinks: true
+    theme_color: '#8c2b20'
+    image_zoom: true
+
+# 主题以本地目录方式装入（themes/oink），不需要 Hugo Modules / Go。
+theme: oink
+
+# Windows 上 Dart Sass 的可执行文件是 sass.exe，且通过绝对路径传入，
+# 所以白名单要匹配完整路径。
+security:
+  exec:
+    allow:
+      - '.*(dart-)?sass(\.exe)?$'
+      - '^go(\.exe)?$'
+      - '^git$'
+      - '^node$'
+      - '^postcss$'
+    osEnv:
+      - '(?i)^((HTTPS?|NO)_PROXY|PATH(EXT)?|APPDATA|TE?MP|TERM|GO\w+|(XDG_CONFIG_)?HOME|USERPROFILE|SSH_AUTH_SOCK|DISPLAY|LANG|SYSTEMDRIVE|PROGRAMDATA)$'

@@ -1,0 +1,37 @@
+sections: [hero, cards, cta]
+
+hero:
+  align: center
+  eyebrow: 篇目索引 · 写作背景 · 名篇精读
+  title_lines:
+    - words: [{ text: 毛泽东选集 }]
+    - words: [{ text: 数字阅读导航 }]
+  lead: 按历史时期整理的篇目结构，配上每篇的写作背景、核心议题与精读笔记，帮你在四卷本里找到方向。
+  actions:
+    - { label: 浏览书目, url: book/, icon: fa-solid fa-book-open, style: primary }
+    - { label: 阅读指南, url: docs/, icon: fa-solid fa-compass, style: ghost }
+
+cards:
+  eyebrow: 从这里开始
+  title: 三条进入路径
+  columns: 3
+  items:
+    - title: 书目结构
+      desc: 第一至第四卷，按第一次国内革命战争、抗日战争、解放战争三个时期排列。
+      icon: fa-solid fa-layer-group
+      url: book/
+    - title: 名篇精读
+      desc: 《实践论》《矛盾论》《论持久战》《新民主主义论》等篇目的逐篇导读。
+      icon: fa-solid fa-magnifying-glass
+      url: docs/jingdu/
+    - title: 版本与索引
+      desc: 版本沿革说明，以及四卷全部篇目的一页式总索引。
+      icon: fa-solid fa-list
+      url: docs/editions/
+
+cta:
+  title: 先看篇目，再读正文。
+  text: 选一个历史时期，顺着时间线把篇目过一遍，再挑两三篇精读。正文请以人民出版社第二版为准。
+  label: 打开书目结构
+  url: book/
+  style: primary

@@ -1,0 +1,74 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+env:
+  HUGO_VERSION: 0.167.0
+  HUGO_ENVIRONMENT: production
+  TZ: Asia/Shanghai
+
+jobs:
+  build:
+    name: 构建静态站点
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出源码
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      # enablement: true —— 仓库首次运行时自动启用 Pages，省掉手工去网页点开关
+      - name: 配置 Pages（取得真实 baseURL）
+        id: pages
+        uses: actions/configure-pages@v6
+        with:
+          enablement: true
+
+      # 与本地构建保持一致：非 extended Hugo + Dart Sass。
+      # Oink 的模板对 toCSS 显式指定了 dartsass 转译器，因此不需要 LibSass。
+      - name: 安装 Hugo
+        run: |
+          curl -fsSL --retry 3 -o /tmp/hugo.tar.gz \
+            "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_${HUGO_VERSION}_linux-amd64.tar.gz"
+          sudo tar -xzf /tmp/hugo.tar.gz -C /usr/local/bin hugo
+          hugo version
+
+      - name: 安装 Dart Sass
+        run: |
+          npm install --global sass
+          sass --version
+
+      - name: 构建
+        run: |
+          hugo --gc --minify --cleanDestinationDir \
+            --baseURL "${{ steps.pages.outputs.base_url }}/" \
+            --printPathWarnings
+
+      - name: 上传 Pages 产物
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: public
+
+  deploy:
+    name: 发布
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: 部署到 GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
